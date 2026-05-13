@@ -39,7 +39,7 @@ def load_vectorstore(_embeddings):
 # ── Load OpenAI client ───────────────────────────────────────────────────────
 @st.cache_resource
 def load_llm():
-    return Groq(api_key=os.getenv("GROQ_API_KEY"))
+    return Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 embeddings   = load_embeddings()
 vectorstore  = load_vectorstore(embeddings)
