@@ -1,56 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ── Base ── */
 .stApp {
-    background: #f8fafc;
-    color: #0f172a;
+    background: #f5f0e8;
+    color: #1a1a2e;
+    font-family: Georgia, serif;
 }
 
+/* ── Main Title ── */
 h1 {
-    color: #0f172a;
-    font-size: 40px;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 10px;
+    font-family: Georgia, serif !important;
+    color: #1a1a2e !important;
+    font-size: 56px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    letter-spacing: 2px !important;
+    border-bottom: 3px double #8b6914 !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 8px !important;
+    text-shadow: 1px 1px 3px rgba(139, 105, 20, 0.15);
 }
 
-.subtitle {
-    text-align: center;
-    color: #475569;
-    font-size: 17px;
-    margin-bottom: 30px;
+/* ── Section Headings ── */
+h2 {
+    font-family: Georgia, serif !important;
+    color: #2c2c54 !important;
+    font-size: 34px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    border-bottom: 1px solid #c9a84c !important;
+    padding-bottom: 8px !important;
+    margin-top: 32px !important;
 }
 
+h3 {
+    font-family: Georgia, serif !important;
+    color: #3b2f00 !important;
+    font-size: 26px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ── Subtitle ── */
+.stApp [data-testid="stMarkdownContainer"] p {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: #6b5e3e;
+    font-style: italic;
+}
+
+/* ── Input Label ── */
+.stTextInput label {
+    font-family: Georgia, serif !important;
+    font-size: 18px !important;
+    color: #2c2c54 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ── Input Field ── */
+.stTextInput input {
+    background-color: #fffdf7 !important;
+    color: #1a1a2e !important;
+    border-radius: 8px !important;
+    border: 1.5px solid #c9a84c !important;
+    padding: 14px 18px !important;
+    font-size: 18px !important;
+    font-family: Georgia, serif !important;
+    box-shadow: 0 2px 8px rgba(139, 105, 20, 0.1) !important;
+}
+
+.stTextInput input:focus {
+    border-color: #8b6914 !important;
+    box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.2) !important;
+}
+
+/* ── Answer Box ── */
 .answer-box {
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 12px;
-    border-left: 5px solid #2563eb;
-    color: #0f172a;
-    font-size: 16px;
-    line-height: 1.8;
+    background: linear-gradient(135deg, #fffdf7 0%, #fdf6e3 100%);
+    padding: 32px 36px;
+    border-radius: 14px;
+    border-left: 6px solid #8b6914;
+    color: #1a1a2e;
+    font-size: 19px;
+    line-height: 2;
     white-space: pre-wrap;
     word-wrap: break-word;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 24px rgba(139, 105, 20, 0.14);
+    font-family: Georgia, serif;
+    position: relative;
 }
 
-.source-box {
-    background-color: #ffffff;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    color: #334155;
-    border: 1px solid #e2e8f0;
+.answer-box::before {
+    content: '\201C';
+    font-family: Georgia, serif;
+    font-size: 100px;
+    color: #c9a84c;
+    opacity: 0.18;
+    position: absolute;
+    top: -18px;
+    left: 14px;
+    line-height: 1;
 }
 
-.stTextInput input {
-    background-color: #ffffff;
-    color: #0f172a;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    padding: 10px;
+/* ── Success Banner ── */
+div[data-testid="stAlert"] div[data-baseweb="notification"] {
+    border-radius: 10px !important;
+    font-family: Georgia, serif !important;
+    font-size: 18px !important;
 }
 
-.stSuccess {
-    background-color: #ecfdf5;
-    color: #065f46;
-    border-radius: 10px;
-    border: 1px solid #10b981;
+/* ── Info Box (Judge Output) ── */
+.stInfo, div[data-baseweb="notification"] {
+    background-color: #fef9ec !important;
+    color: #3b2f00 !important;
+    border-left: 4px solid #c9a84c !important;
+    border-radius: 10px !important;
+    font-size: 18px !important;
+    font-family: Georgia, serif !important;
+    line-height: 1.9 !important;
+}
+
+/* ── Metric Cards ── */
+[data-testid="stMetric"] {
+    background: #fffdf7 !important;
+    border: 1.5px solid #c9a84c !important;
+    border-radius: 14px !important;
+    padding: 20px 24px !important;
+    box-shadow: 0 4px 12px rgba(139, 105, 20, 0.1) !important;
+}
+
+[data-testid="stMetricLabel"] {
+    font-family: Georgia, serif !important;
+    font-size: 18px !important;
+    color: #6b5e3e !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #8b6914 !important;
+    font-size: 36px !important;
+    font-weight: 700 !important;
+    font-family: Georgia, serif !important;
+}
+
+/* ══════════════════════════════════
+   SIDEBAR
+══════════════════════════════════ */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #12122a 0%, #1a1a2e 60%, #2c2020 100%) !important;
+    border-right: 2px solid #8b6914 !important;
+    padding-top: 10px !important;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-family: Georgia, serif !important;
+    color: #c9a84c !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    border-bottom: 1px solid #8b6914 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 14px !important;
+}
+
+[data-testid="stSidebar"] .stInfo,
+[data-testid="stSidebar"] [data-baseweb="notification"],
+[data-testid="stSidebarContent"] .stAlert {
+    background-color: rgba(201, 168, 76, 0.08) !important;
+    border: 1px solid #8b6914 !important;
+    border-radius: 10px !important;
+    color: #e8d9b0 !important;
+}
+
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] div,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] label {
+    font-family: Georgia, serif !important;
+    font-size: 17px !important;
+    color: #e8d9b0 !important;
+    line-height: 2 !important;
+}
+
+[data-testid="stSidebar"]::before {
+    content: '\2696';
+    display: block;
+    text-align: center;
+    font-size: 48px;
+    color: #c9a84c;
+    opacity: 0.6;
+    margin: 16px 0 4px 0;
+}
+
+/* ── Expander ── */
+details summary {
+    font-family: Georgia, serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #2c2c54 !important;
+    background-color: #fdf6e3 !important;
+    border-radius: 8px !important;
+    border: 1px solid #c9a84c !important;
+    padding: 12px 16px !important;
+    letter-spacing: 0.5px !important;
+}
+
+details[open] summary {
+    border-radius: 8px 8px 0 0 !important;
+}
+
+details > div {
+    background-color: #fffdf7 !important;
+    border: 1px solid #e0cfa0 !important;
+    border-top: none !important;
+    border-radius: 0 0 8px 8px !important;
+    padding: 18px !important;
+}
+
+/* ── Spinner ── */
+.stSpinner > div {
+    border-top-color: #8b6914 !important;
+}
+
+/* ── Warning ── */
+.stWarning {
+    background-color: #fefce8 !important;
+    border-left: 4px solid #b45309 !important;
+    border-radius: 8px !important;
+    font-family: Georgia, serif !important;
+    font-size: 18px !important;
+    color: #78350f !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: #f5f0e8; }
+::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #8b6914; }
+
+/* ── Top bar ── */
+header[data-testid="stHeader"] {
+    background: #12122a !important;
+    border-bottom: 2px solid #8b6914 !important;
+}
+
+/* ── Hide sidebar collapse button ── */
+[data-testid="stSidebarCollapseButton"] {
+    display: none !important;
+}
+
+button[kind="headerNoPadding"] {
+    display: none !important;
+}
+
+[data-testid="collapsedControl"] {
+    display: none !important;
 }

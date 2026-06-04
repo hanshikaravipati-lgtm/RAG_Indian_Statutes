@@ -1,7 +1,6 @@
 .venv/
 venv/
 data/
-embeddings/
 .env
 __pycache__/
 .streamlit/secrets.toml

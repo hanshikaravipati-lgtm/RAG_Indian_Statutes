@@ -1,103 +1,155 @@
-import os
 import streamlit as st
+from dotenv import load_dotenv
+import os
+load_dotenv()
+from groq import Groq
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-from groq import Groq
-from dotenv import load_dotenv
 
-load_dotenv()
 
 st.set_page_config(
-    page_title="RAG QA over Indian Legal Dataset",
+    page_title="Legal Intelligence Assistant",
     page_icon="⚖️",
-    layout="centered"
+    layout="wide"
 )
 
-with open("style.css", "r", encoding="utf-8") as f:
+# Load CSS
+with open("style.css", encoding="utf-8") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.markdown("<h1>⚖️ RAG-based QA over Indian Legal Dataset</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p class='subtitle'>Ask questions from Indian Court Judgements and Summaries dataset.</p>",
-    unsafe_allow_html=True
-)
+st.title("⚖️ Legal Intelligence Assistant")
+st.markdown("### RAG-based Question Answering over Indian Court Judgements")
 
-# ── Load embeddings ──────────────────────────────────────────────────────────
+st.sidebar.header("Project Details")
+st.sidebar.info("""
+Dataset: Indian Court Judgements
+
+Embedding Model:
+all-MiniLM-L6-v2
+
+Vector Database:
+FAISS
+
+LLM:
+Llama 3.3 70B (Groq)
+
+Evaluation:
+LLM-as-a-Judge
+""")
+
 @st.cache_resource
 def load_embeddings():
-    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    return HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    )
 
-# ── Load FAISS vectorstore ───────────────────────────────────────────────────
 @st.cache_resource
-def load_vectorstore(_embeddings):
+def load_vectorstore():
+    embeddings = load_embeddings()
+
+    if not os.path.exists("embeddings"):
+        st.error("Embeddings folder not found. Please create FAISS embeddings first.")
+        st.stop()
+
     return FAISS.load_local(
         "embeddings",
-        _embeddings,
+        embeddings,
         allow_dangerous_deserialization=True
     )
 
-# ── Load OpenAI client ───────────────────────────────────────────────────────
 @st.cache_resource
-def load_llm():
-    return Groq(api_key=st.secrets["GROQ_API_KEY"])
+def load_groq_client():
+    load_dotenv(override=True)
+    api_key = os.getenv("GROQ_API_KEY", "").strip()
+    if not api_key:
+        st.error("GROQ_API_KEY not found")
+        st.stop()
+    return Groq(api_key=api_key)
 
-embeddings   = load_embeddings()
-vectorstore  = load_vectorstore(embeddings)
-retriever    = vectorstore.as_retriever(search_kwargs={"k": 4})
-client       = load_llm()
+client = load_groq_client()
 
-st.success("✅ Vector database & LLM loaded successfully!")
+vectorstore = load_vectorstore()
+st.success("✅ Vector Database Loaded Successfully!")
 
-# ── Query interface ───────────────────────────────────────────────────────────
-question = st.text_input("Enter your legal question:")
+question = st.text_input("🔍 Enter your legal question:")
 
 if question:
-    with st.spinner("Retrieving relevant documents and generating answer…"):
+    with st.spinner("Searching legal database..."):
+        docs = vectorstore.similarity_search(question, k=4)
 
-        # Step 1 – Retrieve top-k relevant chunks
-        docs = retriever.invoke(question)
+        if not docs:
+            st.warning("No relevant documents found.")
+            st.stop()
 
-        # Step 2 – Build context from retrieved chunks
-        context = "\n\n".join([doc.page_content for doc in docs[:3]])
+        context = "\n\n".join([doc.page_content for doc in docs])
 
-        # Step 3 – Generate answer using OpenAI GPT-3.5
+    prompt = f"""
+You are a legal assistant specializing in Indian law.
+Use the following legal context if relevant, otherwise answer from your own knowledge.
+If answering from your own knowledge, end your answer with:
+"Legal References: [list the relevant articles, acts, or case names you used]"
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
+"""
+
+    with st.spinner("Generating answer..."):
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a legal assistant specializing in Indian law. "
-                        "Use the provided court judgement excerpts to answer the question accurately."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        f"Context from Indian Court Judgements:\n{context}\n\n"
-                        f"Question: {question}\n\n"
-                        f"Please provide a clear and concise answer based on the context above."
-                    )
-                }
+                {"role": "user", "content": prompt}
             ],
-            max_tokens=512,
-            temperature=0.3,
+            temperature=0.2,
+            max_tokens=512
         )
-        answer_text = response.choices[0].message.content
 
-    # ── Display answer ────────────────────────────────────────────────────────
-    st.markdown("## Answer")
-    st.markdown(
-        f"<div class='answer-box'>{answer_text}</div>",
-        unsafe_allow_html=True
+        answer = response.choices[0].message.content
+
+    st.markdown("## ⚖️ Answer")
+    st.markdown(f'<div class="answer-box">{answer}</div>', unsafe_allow_html=True)
+
+    st.markdown("## 📊 Evaluation Metrics")
+
+    confidence = min(len(docs) * 25, 100)
+    st.metric("Retrieval Confidence", f"{confidence}%")
+
+    judge_prompt = f"""
+You are an AI evaluator.
+
+Question:
+{question}
+
+Answer:
+{answer}
+
+Evaluate:
+
+1. Relevance (1-10)
+2. Correctness (1-10)
+3. Completeness (1-10)
+
+Give a brief justification.
+"""
+
+    judge_response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {"role": "user", "content": judge_prompt}
+        ],
+        temperature=0,
+        max_tokens=300
     )
 
-    # ── Display sources ───────────────────────────────────────────────────────
-    st.markdown("## Sources")
-    for i, doc in enumerate(docs, 1):
-        source = doc.metadata.get("source", "Indian Court Judgements Dataset")
-        row    = doc.metadata.get("row", "Unknown")
-        st.markdown(
-            f"<div class='source-box'>📄 Source {i}: {source} | Dataset Row: {row}</div>",
-            unsafe_allow_html=True
-        )
+    st.markdown("## 🧑‍⚖️ LLM-as-a-Judge Evaluation")
+    st.info(judge_response.choices[0].message.content)
+
+    with st.expander("📂 View Retrieved Legal Context"):
+        for i, doc in enumerate(docs, 1):
+            st.markdown(f"### Document {i}")
+            st.write(doc.page_content[:1000])
+            st.markdown("---")
