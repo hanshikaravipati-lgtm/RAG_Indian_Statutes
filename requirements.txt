@@ -8,7 +8,7 @@ langchain-community
 langchain-huggingface
 
 faiss-cpu
-
+ragas
 sentence-transformers
 transformers
 torch
