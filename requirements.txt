@@ -3,10 +3,7 @@ python-dotenv
 groq
 faiss-cpu
 sentence-transformers
-datasets
-nest-asyncio
 langchain
 langchain-community
 langchain-groq
 langchain-huggingface
-ragas==0.2.6
