@@ -28,7 +28,7 @@ __pycache__/
 Thumbs.db
 
 # FAISS Embeddings
-embeddings/
+
 *.faiss
 *.pkl
 

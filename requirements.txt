@@ -1,16 +1,28 @@
-streamlit
-python-dotenv
-groq
-faiss-cpu
-sentence-transformers
-datasets
-nest-asyncio
-torch
-torchvision
+# Virtual environment
+.venv/
+venv/
 
-langchain
-langchain-community
-langchain-groq
-langchain-huggingface
+# Secrets
+.env
+.streamlit/secrets.toml
 
-ragas==0.1.21
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large dataset
+data/court_data.csv
+
+# Logs
+*.log
+
