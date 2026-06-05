@@ -1,7 +1,16 @@
 streamlit
-groq
+pandas
 python-dotenv
+groq
+
+langchain
 langchain-community
 langchain-huggingface
+
 faiss-cpu
+
 sentence-transformers
+transformers
+torch
+sentencepiece
+accelerate

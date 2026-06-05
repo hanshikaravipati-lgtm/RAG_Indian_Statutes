@@ -1,6 +1,49 @@
+# Virtual Environment
 .venv/
 venv/
-data/
+
+# Environment Variables
 .env
+
+# Python Cache
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# FAISS Embeddings
+embeddings/
+*.faiss
+*.pkl
+
+# Large Dataset
+data/court_data.csv
+
+# Logs
+*.log
+
+# Build Files
+build/
+dist/
+*.egg-info/
+
+# Temporary Files
+temp/
+tmp/
 .streamlit/secrets.toml
