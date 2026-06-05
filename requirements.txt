@@ -1,16 +1,14 @@
 streamlit
-pandas
 python-dotenv
 groq
+faiss-cpu
+sentence-transformers
+datasets
+nest-asyncio
 
 langchain
 langchain-community
+langchain-groq
 langchain-huggingface
 
-faiss-cpu
-ragas
-sentence-transformers
-transformers
-torch
-sentencepiece
-accelerate
+ragas==0.1.21
