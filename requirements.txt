@@ -5,6 +5,8 @@ faiss-cpu
 sentence-transformers
 datasets
 nest-asyncio
+torch
+torchvision
 
 langchain
 langchain-community
